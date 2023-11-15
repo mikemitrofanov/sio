@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\TimeLogApi;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\User\Project;
@@ -35,6 +36,11 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
     Route::get('/timelog/{id}', [Project::class, 'show'])->name('timelog.show');
+
+    // move api endpoints to api routes
+    Route::post('/timelog/{id}', [TimeLogApi::class, 'create']);
+    Route::post('/timelog/{id}/stop', [TimeLogApi::class, 'stop']);
+    Route::post('/timelog/{id}/manual', [TimeLogApi::class, 'setManualLog']);
 });
 
 Route::middleware('auth')->group(function () {

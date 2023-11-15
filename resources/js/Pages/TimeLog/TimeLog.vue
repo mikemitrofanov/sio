@@ -1,5 +1,6 @@
 <script setup>
-import { ref } from 'vue';
+import {onMounted, ref, reactive} from 'vue';
+import moment from 'moment';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
@@ -15,16 +16,73 @@ const startTime = ref(null);
 const finishTime = ref(null);
 const errorMessage = ref(null);
 
-const startTracking = () => {
+let token = null;
+let interval = null;
 
+onMounted(() => {
+    token = document.querySelectorAll('meta[name="csrf-token"]')[0].getAttribute('content');
+    // if user hasn't finished previous tracking, show time and "Stop' button
+    if (lastUnfinishedLog.value) {
+        interval = setInterval(calculateTrackingTime, 1000);
+    }
+});
+
+const calculateTrackingTime = () => {
+    const diff = moment().format('X') - moment(lastUnfinishedLog.value.started_at).format("X");
+    const duration = moment.duration(diff, 'seconds');
+    timeString.value = moment.utc(duration.as('milliseconds')).format('HH:mm:ss');
 }
 
-const stopTracking = () => {
 
+const startTracking = async () => {
+    // set token as interceptor for fetch api requests
+    const response = await fetch(`/timelog/${projectId}`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    });
+    const object = await response.json();
+    lastUnfinishedLog.value = {
+        ...lastUnfinishedLog.value,
+        id: object.lastUnfinishedLogId,
+        started_at: new Date()
+    };
+    interval = setInterval(calculateTrackingTime, 1000);
 }
 
-const submitManualTime = () => {
+const stopTracking = async () => {
+    await fetch(`/timelog/${lastUnfinishedLog.value.id}/stop`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    });
+    lastUnfinishedLog.value = null;
+    timeString.value = '';
+    clearInterval(interval);
+}
 
+const submitManualTime = async () => {
+    if (!startTime.value || !finishTime.value) {
+        errorMessage.value = 'Select a range of time to track';
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('startTime', JSON.stringify(startTime.value));
+    formData.append('finishTime', JSON.stringify(finishTime.value));
+
+    const response = await fetch(`/timelog/${projectId}/manual`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': token
+        },
+        body: formData
+    });
+
+    if (!response.ok) errorMessage.value = await response.text();
+    else errorMessage.value = '';
 }
 </script>
 
