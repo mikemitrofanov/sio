@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProjectsController;
 use App\Http\Controllers\Admin\UsersController;
+use App\Http\Controllers\Api\CSVExportApi;
 use App\Http\Controllers\Api\TimeLogApi;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -60,6 +61,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function() {
    Route::get('/admin/users', [UsersController::class, 'show'])->name('admin.showUsers');
    Route::get('/admin/users/{id}', [UsersController::class, 'edit'])->name('admin.editUser');
    Route::post('/admin/users/{id}', [UsersController::class, 'save'])->name('admin.saveUser');
+
+   Route::get('/admin/csv-export', [CSVExportApi::class, 'export'])->name('admin.exportToCSV');
 });
 
 Route::middleware('auth')->group(function () {

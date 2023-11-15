@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
@@ -9,6 +10,15 @@ import { usePage, Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
 const user = usePage().props.auth.user;
+
+const exportInCSV = async () => {
+    const token = document.querySelectorAll('meta[name="csrf-token"]')[0].getAttribute('content');
+    const response = await fetch('/admin/csv-export', {
+        headers: {
+            'X-CSRF-TOKEN': token
+        }
+    });
+}
 </script>
 
 <template>
@@ -43,6 +53,11 @@ const user = usePage().props.auth.user;
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
+                            <div v-if="user.role === 'admin'">
+                                <PrimaryButton class="ms-4" @click="exportInCSV">
+                                    Export in CSV
+                                </PrimaryButton>
+                            </div>
                             <!-- Settings Dropdown -->
                             <div class="ms-3 relative">
                                 <Dropdown align="right" width="48">
