@@ -82,7 +82,7 @@ const submitManualTime = async () => {
     });
 
     if (!response.ok) errorMessage.value = await response.text();
-    else errorMessage.value = '';
+    else window.location = `/timelog/${projectId}/history`;
 }
 </script>
 

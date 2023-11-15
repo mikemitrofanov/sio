@@ -32,6 +32,7 @@ class TimeLog extends Controller
     {
         $logs = LogModel::where('user_id', $request->user()->id)
             ->where('project_id', $id)
+            ->orderBy('started_at')
             ->paginate(10);
 
         return Inertia::render('TimeLog/TimeLogHistory', [
