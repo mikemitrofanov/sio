@@ -58,6 +58,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function() {
    Route::post('/admin/project/create', [ProjectsController::class, 'store'])->name('admin.storeProject');
 
    Route::get('/admin/users', [UsersController::class, 'show'])->name('admin.showUsers');
+   Route::get('/admin/users/{id}', [UsersController::class, 'edit'])->name('admin.editUser');
+   Route::post('/admin/users/{id}', [UsersController::class, 'save'])->name('admin.saveUser');
 });
 
 Route::middleware('auth')->group(function () {

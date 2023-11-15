@@ -9,7 +9,6 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
-
 class ProjectsController extends Controller
 {
     public function show(Request $request): Response

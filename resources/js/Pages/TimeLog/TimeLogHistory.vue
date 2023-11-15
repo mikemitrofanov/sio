@@ -36,14 +36,13 @@ const { logs, projectId } = usePage().props;
                         </thead>
                         <tbody>
                         <tr v-for="log in logs.data" :key="log.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
-                            <td class="border-t">
+                            <td class="border-t px-1 py-2">
                                 {{ log.started_at }}
                             </td>
                             <td class="border-t">
                                 {{ log.finished_at }}
                             </td>
                             <td class="border-t max-w-[40px]">
-
                                 <Link class="flex items-center px-4" :href="`/timelog/${projectId}/history/${log.id}`" tabindex="-1">
                                     <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
                                 </Link>

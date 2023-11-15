@@ -19,8 +19,8 @@ const user = usePage().props.auth.user;
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
 
                     <div v-if="user.role === 'admin'" class="p-6 text-gray-900" >You are logged in</div>
-                    <div v-else>
-                        Projects
+                    <div v-else class="p-6">
+                        <div class="font-bold mb-4">Projects</div>
                         <div v-for="project in projects">
                             <Link :href="`/timelog/${project.id}`">
                                 {{ project.title }}
