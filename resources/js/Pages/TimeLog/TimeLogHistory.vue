@@ -12,12 +12,12 @@ const { logs, projectId } = usePage().props;
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex">
-                <Link :href="`/timelog/${projectId}`">
+            <div class="flex items-center">
+                <Link :href="`/timelog/${projectId}`" class="w-[120px]">
                     Time Log
                 </Link>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Time Log History</h2>
-                <Link :href="`/timelog/${projectId}/statistics`">
+                <h2 class="font-semibold text-gray-800 leading-tight w-[120px]">Logs History</h2>
+                <Link :href="`/timelog/${projectId}/statistics`" class="w-[120px]">
                     Logs Statistics
                 </Link>
             </div>

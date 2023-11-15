@@ -37,9 +37,12 @@ Route::middleware(['auth', 'verified'])->group(function() {
 
     Route::get('/timelog/{id}', [TimeLog::class, 'show'])->name('timelog.show');
     Route::get('/timelog/{id}/history', [TimeLog::class, 'showLogs'])->name('timelog.showLogs');
+
     Route::get('/timelog/{id}/history/{logId}', [TimeLog::class, 'showLog'])->name('timelog.showSingelLog');
     Route::post('/timelog/{id}/history/{logId}', [TimeLog::class, 'edit'])->name('timelog.edit');
     Route::delete('/timelog/{id}/history/{logId}', [TimeLog::class, 'delete'])->name('timelog.delete');
+
+    Route::get('/timelog/{id}/statistics', [TimeLog::class, 'showStatistics'])->name('timelog.showStatistics');
 
     // move api endpoints to api routes
     Route::post('/timelog/{id}', [TimeLogApi::class, 'create']);

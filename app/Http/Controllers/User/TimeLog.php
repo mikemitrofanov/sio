@@ -96,4 +96,16 @@ class TimeLog extends Controller
 
         return to_route('timelog.showLogs', ['id' => $log->project_id]);
     }
+
+    public function showStatistics(Request $request, string $id): Response
+    {
+        $logs = LogModel::where('user_id', $request->user()->id)
+            ->where('project_id', $id)
+            ->get();
+
+        return Inertia::render('TimeLog/TimeLogsStatistics', [
+            'logs' => $logs,
+            'projectId' => $id
+        ]);
+    }
 }

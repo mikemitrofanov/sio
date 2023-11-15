@@ -91,12 +91,12 @@ const submitManualTime = async () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Time Log</h2>
-                <Link :href="`/timelog/${projectId}/history`">
+            <div class="flex items-center">
+                <h2 class="font-semibold text-gray-800 leading-tight w-[120px]">Time Log</h2>
+                <Link :href="`/timelog/${projectId}/history`" class="w-[120px]">
                     Logs History
                 </Link>
-                <Link :href="`/timelog/${projectId}/statistics`">
+                <Link :href="`/timelog/${projectId}/statistics`" class="w-[120px]">
                     Logs Statistics
                 </Link>
             </div>
