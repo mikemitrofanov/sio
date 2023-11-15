@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\ProjectsController;
+use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\Api\TimeLogApi;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -48,6 +50,14 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::post('/timelog/{id}', [TimeLogApi::class, 'create']);
     Route::post('/timelog/{id}/stop', [TimeLogApi::class, 'stop']);
     Route::post('/timelog/{id}/manual', [TimeLogApi::class, 'setManualLog']);
+});
+
+Route::middleware(['auth', 'isAdmin'])->group(function() {
+   Route::get('/admin/projects', [ProjectsController::class, 'show'])->name('admin.showProjects');
+   Route::get('/admin/projects/create', [ProjectsController::class, 'create'])->name('admin.createProject');
+   Route::post('/admin/project/create', [ProjectsController::class, 'store'])->name('admin.storeProject');
+
+   Route::get('/admin/users', [UsersController::class, 'show'])->name('admin.showUsers');
 });
 
 Route::middleware('auth')->group(function () {
