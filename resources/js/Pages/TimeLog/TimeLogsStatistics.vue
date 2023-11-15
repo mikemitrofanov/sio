@@ -4,7 +4,13 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import {usePage, Link} from "@inertiajs/vue3";
 import { Chart } from 'highcharts-vue'
 
-const projectId = usePage().props.projectId;
+const { logs, projectId } = usePage().props;
+const totalDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+const values = Array.from({ length: totalDays }, (_) => 0);
+logs.forEach(item => {
+    const index = parseInt(item.day, 10) - 1;
+    values[index] = parseInt(item.total_time / 3600);
+})
 
 const now = new Date();
 const chartOptions = reactive({
@@ -16,9 +22,9 @@ const chartOptions = reactive({
     },
     series: [
         {
-            name: 'Total Confirmed',
-            type: 'line',
-            data: [19.9, 31.5, 25.4, 75, 45, 27, 12, 15, 19, 20],
+            name: 'Tracked per day',
+            type: 'column',
+            data: values,
             pointStart: Date.UTC(now.getFullYear(), now.getMonth(), 1),
             pointInterval: 24 * 3600 * 1000 // one day
         }

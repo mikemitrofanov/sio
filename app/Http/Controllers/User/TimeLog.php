@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TimeLog as LogModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -99,8 +100,14 @@ class TimeLog extends Controller
 
     public function showStatistics(Request $request, string $id): Response
     {
-        $logs = LogModel::where('user_id', $request->user()->id)
+        $logs = LogModel::select(DB::raw('
+                date_format(started_at, "%d") as day,
+                date_format(started_at, "%m") as month,
+                SUM(time_to_sec(timediff(finished_at, started_at))) as total_time
+             '))
+            ->where('user_id', $request->user()->id)
             ->where('project_id', $id)
+            ->groupBy('day', 'month')
             ->get();
 
         return Inertia::render('TimeLog/TimeLogsStatistics', [
