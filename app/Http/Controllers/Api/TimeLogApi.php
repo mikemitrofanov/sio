@@ -56,10 +56,20 @@ class TimeLogApi extends Controller
     public function setManualLog(Request $request, string $id): JsonResponse|Response
     {
         $startDateObject = json_decode($request->post('startTime'));
-        $startDate = Carbon::createFromTime($startDateObject->hours, $startDateObject->minutes, 0, 'CET');
+        $startDate = Carbon::createFromTime(
+            $startDateObject->hours,
+            $startDateObject->minutes,
+            $startDateObject->seconds,
+            'CET'
+        );
 
         $finishDateObject = json_decode($request->post('finishTime'));
-        $finishDate = Carbon::createFromTime($finishDateObject->hours, $finishDateObject->minutes, 0, 'CET');
+        $finishDate = Carbon::createFromTime(
+            $finishDateObject->hours,
+            $finishDateObject->minutes,
+            $finishDateObject->seconds,
+            'CET'
+        );
 
         $crossingTracking = TimeLog::where('user_id', $request->user()->id)
             ->where('project_id', $id)

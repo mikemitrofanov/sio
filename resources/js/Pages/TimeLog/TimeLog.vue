@@ -5,7 +5,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import {usePage} from "@inertiajs/vue3";
+import {usePage, Link} from "@inertiajs/vue3";
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const projectId = usePage().props.projectId;
@@ -91,7 +91,15 @@ const submitManualTime = async () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Time Log</h2>
+            <div class="flex">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Time Log</h2>
+                <Link :href="`/timelog/${projectId}/history`">
+                    Logs History
+                </Link>
+                <Link :href="`/timelog/${projectId}/statistics`">
+                    Logs Statistics
+                </Link>
+            </div>
         </template>
 
         <div class="py-12">
@@ -133,14 +141,14 @@ const submitManualTime = async () => {
                             <div class="flex flex-1 items-center">
                                 <div class="pr-6">From time: </div>
                                 <div>
-                                    <VueDatePicker v-model="startTime" time-picker teleport-center></VueDatePicker>
+                                    <VueDatePicker v-model="startTime" time-picker enable-seconds teleport-center></VueDatePicker>
                                 </div>
                             </div>
 
                             <div class="flex flex-1 items-center">
                                 <div class="pr-6">To time: </div>
                                 <div>
-                                    <VueDatePicker v-model="finishTime" time-picker teleport-center></VueDatePicker>
+                                    <VueDatePicker v-model="finishTime" time-picker enable-seconds teleport-center></VueDatePicker>
                                 </div>
                             </div>
                         </div>

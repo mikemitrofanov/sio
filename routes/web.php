@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\TimeLogApi;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\User\Project;
+use App\Http\Controllers\User\TimeLog;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,7 +35,11 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'show'])->name('dashboard');
 
-    Route::get('/timelog/{id}', [Project::class, 'show'])->name('timelog.show');
+    Route::get('/timelog/{id}', [TimeLog::class, 'show'])->name('timelog.show');
+    Route::get('/timelog/{id}/history', [TimeLog::class, 'showLogs'])->name('timelog.showLogs');
+    Route::get('/timelog/{id}/history/{logId}', [TimeLog::class, 'showLog'])->name('timelog.showSingelLog');
+    Route::post('/timelog/{id}/history/{logId}', [TimeLog::class, 'edit'])->name('timelog.edit');
+    Route::delete('/timelog/{id}/history/{logId}', [TimeLog::class, 'delete'])->name('timelog.delete');
 
     // move api endpoints to api routes
     Route::post('/timelog/{id}', [TimeLogApi::class, 'create']);
